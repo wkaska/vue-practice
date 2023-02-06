@@ -3,6 +3,14 @@
     <img class="img" alt="#" src="../assets/logo.png">
     <h1>Rick and Morty Wiki</h1>
     <input type="text" v-model="searchQuery" placeholder="Поиск...">
+
+    <div class="form__pagina">
+      <button v-for="page in pages" :key="page" type="button" @click="currentPage = page">
+        {{ page }}
+      </button>
+      <p>Страница {{ currentPage }} из {{ pages }}</p>
+    </div>
+
     <div class="wrapper">
       <div class="wrapper__blog" v-for="(character, index) in filterSearch" :key="index">
       <a href=""><img v-bind:src="character.image" alt="#"></a>
@@ -30,8 +38,8 @@ export default {
     return {
       searchQuery: '',
       characters: [],
-      // page: 1,
-      // total: 0,
+      pages: 4,
+      currentPage: 1,
     }
   },
   components: {
@@ -45,16 +53,11 @@ export default {
   methods: {
     getTodos(){
       axios
-      .get('https://rickandmortyapi.com/api/character', {
-
+      .get('https://rickandmortyapi.com/api/character/?page=6', {
       })
-      // this.total = Math.ceil(response.data['x-total-count'] / this.limit)
       .then(response => {
         (this.characters = response.data.results)
       })
-      // .then(response => {
-      //   return response.results
-      // })
       .catch(error => {
         console.log(error)
       })
@@ -149,5 +152,16 @@ input{
 }
 input:focus{
   box-shadow: 0 0 15px 4px rgba(0,0,0,0.6);
+}
+.form__pagina{
+  padding: 25px 0 25px 0;
+}
+p{
+  font-size: 24px;
+  color: greenyellow;
+  padding: 10px 0 0 0;
+}
+button{
+  margin: 0 5px 0 5px;
 }
 </style>
